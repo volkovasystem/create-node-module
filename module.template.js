@@ -44,7 +44,7 @@
 const util = require( "util" );
 
 const $moduleVariableNamespace = (
-	async	function $moduleVariableNamespace( ){
+	async	function $moduleVariableNamespace( sampleParameter ){
 				/*;
 					@procedure-definition:
 						{{ @module-description }}
@@ -52,7 +52,13 @@ const $moduleVariableNamespace = (
 
 					@parameter-definition:
 						{
-
+							"sampleParameter": "
+								[
+									@type:
+											string
+									@end-type
+								]
+							"
 						}
 					@end-parameter-definition
 
@@ -73,7 +79,7 @@ const $moduleVariableNamespace = (
 							"result": "
 								[
 									@type:
-
+											string
 									@end-type
 								]
 							"
@@ -82,10 +88,26 @@ const $moduleVariableNamespace = (
 				*/
 
 				try{
-
+					return	(
+								sampleParameter
+							);
 				}
 				catch( error ){
+					throw	(
+								new	Error(
+										(
+											[
+												"#cannot-{{ @module-value-namespace }};",
 
+												"cannot {{ @module-value-title-namespace }};",
+												"cannot execute {{ @module-value-title-namespace }};",
+
+												"@error-data:",
+												`${ util.inspect( error ) };`
+											]
+										)
+									)
+							);
 				}
 			}
 );
