@@ -814,7 +814,7 @@ const createNodeModule = (
 												),
 
 												"url": (
-													`git+${ repositoryRemoteURLPath }.git`
+													`${ repositoryRemoteURLPath }.git`
 												)
 											}
 										),
