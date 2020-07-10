@@ -79,6 +79,18 @@ const MODULE_VALUE_NAMESPACE_REPLACER_PATTERN = (
 	)
 );
 
+const MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN = (
+	new	RegExp(
+		(
+			"{{ @module-value-title-namespace }}"
+		),
+
+		(
+			"gm"
+		)
+	)
+);
+
 const MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN = (
 	new	RegExp(
 		(
@@ -382,6 +394,19 @@ const createNodeModule = (
 								)
 						);
 
+						const moduleValueTitleNamespace = (
+							moduleValueNamespace
+							.replace(
+								(
+									/\-/g
+								),
+
+								(
+									" "
+								)
+							)
+						);
+
 						const moduleVariableNamespace = (
 							moduleValueNamespace
 							.replace(
@@ -599,6 +624,24 @@ const createNodeModule = (
 
 								(
 									moduleVariableNamespace
+								)
+							)
+							.replace(
+								(
+									MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
+								),
+
+								(
+									moduleValueNamespace
+								)
+							)
+							.replace(
+								(
+									MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN
+								),
+
+								(
+									moduleValueTitleNamespace
 								)
 							)
 							.replace(
