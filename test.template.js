@@ -106,6 +106,61 @@ const TEST_CLEANUP_DIRECTORY = (
 			}
 );
 
+const TEST_SAMPLE_UNIT = (
+	async	function TEST_SAMPLE_UNIT( ){
+				(
+					await	TEST_CLEANUP_DIRECTORY( )
+				);
+
+				(
+					await	TEST_SETUP_DIRECTORY( )
+				);
+
+				try{
+					strictAssert
+					.equal(
+						(
+							true
+						),
+
+						(
+							true
+						),
+
+						(
+							[
+								"#test-sample-unit;",
+
+								"test sample unit;",
+								"must return true;"
+							]
+						)
+					);
+
+					return	(
+								true
+							);
+				}
+				catch( error ){
+					console
+					.error(
+						(
+							error
+						)
+					);
+
+					return	(
+								false
+							);
+				}
+				finally{
+					(
+						await	TEST_CLEANUP_DIRECTORY( )
+					);
+				}
+			}
+);
+
 (
 	async	function TEST_SCENE_BASIC( ){
 				(
@@ -117,11 +172,11 @@ const TEST_CLEANUP_DIRECTORY = (
 					[
 						{
 							"test": (
-								"test description"
+								"test sample unit"
 							),
 
 							"result": (
-								false
+								await	TEST_SAMPLE_UNIT( )
 							)
 						}
 					]
