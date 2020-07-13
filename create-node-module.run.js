@@ -29,7 +29,7 @@ const AUTHOR_CONTACT_DETAIL_PARAMETER = (
 				"use strict";
 
 				const createNodeModule = (
-					require( "./create-node-module.module.js" )
+					require( "./create-node-module.js" )
 				);
 
 				const moduleDirectoryPath = (
