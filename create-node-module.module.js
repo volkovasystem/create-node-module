@@ -9,11 +9,13 @@
 
 		@copyright:
 			Richeve S. Bebedor
+
 			<
-				@year-range:
+				@license-year-range:
 					2020-present
-				@end-year-range
+				@end-license-year-range
 			>
+
 			<
 				@contact-detail:
 					richeve.bebedor@gmail.com
@@ -191,6 +193,10 @@ const GITIGNORE_TEMPLATE_FILE_PATH = (
 	`${ __dirname }/gitignore.template.txt`
 );
 
+const NPMIGNORE_TEMPLATE_FILE_PATH = (
+	`${ __dirname }/npmignore.template.txt`
+);
+
 const EDITORCONFIG_TEMPLATE_FILE_PATH = (
 	`${ __dirname }/editorconfig.template.txt`
 );
@@ -297,18 +303,6 @@ const createNodeModule = (
 						}
 					@end-parameter-definition
 
-					@trigger-definition:
-						{
-							"trigger": "
-								[
-									@type:
-											object as Error
-									@end-type
-								]
-							"
-						}
-					@end-trigger-definition
-
 					@result-definition:
 						{
 							"result": "
@@ -320,6 +314,21 @@ const createNodeModule = (
 							"
 						}
 					@end-result-definition
+
+					@trigger-definition:
+						{
+							"trigger": "
+								[
+									@type:
+											object as Error
+									@end-type
+
+									<@tag:invalid-module-directory-path;>
+									<@tag:cannot-create-node-module;>
+								]
+							"
+						}
+					@end-trigger-definition
 				*/
 
 				try{
@@ -893,6 +902,21 @@ const createNodeModule = (
 							)
 						);
 
+						const NPMIGNORE_TEMPLATE = (
+							(
+								await	fsAsync
+										.readFile(
+											(
+												NPMIGNORE_TEMPLATE_FILE_PATH
+											),
+
+											(
+												"utf8"
+											)
+										)
+							)
+						);
+
 						const EDITORCONFIG_TEMPLATE = (
 							(
 								await	fsAsync
@@ -1022,6 +1046,27 @@ const createNodeModule = (
 
 										(
 											GITIGNORE_TEMPLATE
+										)
+									)
+						);
+
+						(
+							await	writeFile(
+										(
+											path
+											.resolve(
+												(
+													moduleDirectoryPath
+												),
+
+												(
+													".npmignore"
+												)
+											)
+										),
+
+										(
+											NPMIGNORE_TEMPLATE
 										)
 									)
 						);
