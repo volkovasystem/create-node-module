@@ -3,7 +3,10 @@
 const assert = require( "assert" );
 const util = require( "util" );
 
-const strictAssert = assert.strict;
+const strictAssert = (
+	assert
+	.strict
+);
 
 const createNodeModule = (
 	require( "./create-node-module.js" )
@@ -132,6 +135,10 @@ const TEST_CREATE_NODE_MODULE = (
 				);
 
 				try{
+					const testValue = (
+						true
+					);
+
 					strictAssert
 					.equal(
 						(
@@ -143,7 +150,7 @@ const TEST_CREATE_NODE_MODULE = (
 						),
 
 						(
-							true
+							testValue
 						),
 
 						(
@@ -151,7 +158,172 @@ const TEST_CREATE_NODE_MODULE = (
 								"#test-create-node-module;",
 
 								"test create node module;",
-								"must return true;"
+								`must return ${ testValue };`
+							]
+						)
+					);
+
+					return	(
+								true
+							);
+				}
+				catch( error ){
+					console
+					.error(
+						(
+							error
+						)
+					);
+
+					return	(
+								false
+							);
+				}
+				finally{
+					(
+						await	TEST_CLEANUP_DIRECTORY( )
+					);
+				}
+			}
+);
+
+const TEST_CREATE_NODE_MODULE_FILE_LIST = (
+	async	function TEST_CREATE_NODE_MODULE_FILE_LIST( ){
+				(
+					await	TEST_CLEANUP_DIRECTORY( )
+				);
+
+				(
+					await	TEST_SETUP_DIRECTORY( )
+				);
+
+				(
+					await	executeShellCommand(
+								(
+									[
+										"git clone",
+										"https://github.com/volkovasystem/test-create-node-module.git",
+										".test/test-create-node-module"
+									]
+									.join(
+										" "
+									)
+								)
+							)
+				);
+
+				try{
+					const fs = require( "fs" );
+
+					const fsAsync = (
+						fs
+						.promises
+					);
+
+					const testDirectory = (
+						".test/test-create-node-module"
+					);
+
+					(
+						await	createNodeModule(
+									(
+										testDirectory
+									)
+								)
+					);
+
+					const testModuleFileList = (
+						[
+							".editorconfig",
+							".gitignore",
+							".npmignore",
+							"LICENSE",
+							"package.json",
+							"README.md",
+							"test-create-node-module.module.js",
+							"test-create-node-module.test.js"
+						]
+					);
+
+					const actualModuleFileList = (
+						(
+							await	fsAsync
+									.readdir(
+										(
+											testDirectory
+										),
+
+										(
+											{
+												"withFileTypes": true
+											}
+										)
+									)
+						)
+						.filter(
+							(
+								( fileData ) => (
+									fileData
+									.isFile( )
+								)
+							)
+						)
+						.map(
+							(
+								( fileData ) => (
+									fileData
+									.name
+								)
+							)
+						)
+					);
+
+					const testValue = (
+						true
+					);
+
+					strictAssert
+					.equal(
+						(
+								(
+										(
+											testModuleFileList
+											.length
+										)
+									===	(
+											actualModuleFileList
+											.length
+										)
+								)
+
+							&&	(
+									testModuleFileList
+									.every(
+										(
+											( fileName ) => (
+												actualModuleFileList
+												.includes(
+													(
+														fileName
+													)
+												)
+											)
+										)
+									)
+								)
+						),
+
+						(
+							testValue
+						),
+
+						(
+							[
+								"#test-create-node-module-file-list;",
+
+								"test create node module file list;",
+								`must contain the following, ${ testModuleFileList };`,
+								`must return ${ testValue };`
 							]
 						)
 					);
@@ -188,17 +360,29 @@ const TEST_CREATE_NODE_MODULE = (
 
 				console
 				.table(
-					[
-						{
-							"test": (
-								"test create node module"
-							),
+					(
+						[
+							{
+								"test": (
+									"test create node module"
+								),
 
-							"result": (
-								await	TEST_CREATE_NODE_MODULE( )
-							)
-						}
-					]
+								"result": (
+									await	TEST_CREATE_NODE_MODULE( )
+								)
+							},
+
+							{
+								"test": (
+									"test create node module file list"
+								),
+
+								"result": (
+									await	TEST_CREATE_NODE_MODULE_FILE_LIST( )
+								)
+							}
+						]
+					)
 				);
 
 				(
