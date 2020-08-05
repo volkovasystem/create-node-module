@@ -3,7 +3,10 @@
 const assert = require( "assert" );
 const util = require( "util" );
 
-const strictAssert = assert.strict;
+const strictAssert = (
+	assert
+	.strict
+);
 
 const $moduleVariableNamespace = (
 	require( "./{{ @module-value-namespace }}.js" )
@@ -117,6 +120,10 @@ const TEST_SAMPLE_UNIT = (
 				);
 
 				try{
+					const testValue = (
+						true
+					);
+
 					strictAssert
 					.equal(
 						(
@@ -124,7 +131,7 @@ const TEST_SAMPLE_UNIT = (
 						),
 
 						(
-							true
+							testValue
 						),
 
 						(
@@ -132,7 +139,7 @@ const TEST_SAMPLE_UNIT = (
 								"#test-sample-unit;",
 
 								"test sample unit;",
-								"must return true;"
+								`must return ${ testValue };`
 							]
 						)
 					);
@@ -169,17 +176,19 @@ const TEST_SAMPLE_UNIT = (
 
 				console
 				.table(
-					[
-						{
-							"test": (
-								"test sample unit"
-							),
+					(
+						[
+							{
+								"test": (
+									"test sample unit"
+								),
 
-							"result": (
-								await	TEST_SAMPLE_UNIT( )
-							)
-						}
-					]
+								"result": (
+									await	TEST_SAMPLE_UNIT( )
+								)
+							}
+						]
+					)
 				);
 
 				(

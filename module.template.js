@@ -9,11 +9,13 @@
 
 		@copyright:
 			{{ @author-title-namespace }}
+
 			<
 				@license-year-range:
 					{{ @license-year }}-present
 				@end-license-year-range
 			>
+
 			<
 				@contact-detail:
 					{{ @author-contact-detail }}
@@ -62,18 +64,6 @@ const $moduleVariableNamespace = (
 						}
 					@end-parameter-definition
 
-					@trigger-definition:
-						{
-							"trigger": "
-								[
-									@type:
-											object as Error
-									@end-type
-								]
-							"
-						}
-					@end-trigger-definition
-
 					@result-definition:
 						{
 							"result": "
@@ -85,6 +75,20 @@ const $moduleVariableNamespace = (
 							"
 						}
 					@end-result-definition
+
+					@trigger-definition:
+						{
+							"trigger": "
+								[
+									@type:
+											object as Error
+									@end-type
+
+									<@tag:cannot-{{ @module-value-namespace }};>
+								]
+							"
+						}
+					@end-trigger-definition
 				*/
 
 				try{
