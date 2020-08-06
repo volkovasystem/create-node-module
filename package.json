@@ -1,6 +1,6 @@
 {
 	"name": "@volkovasystem/create-node-module",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Fast bootstrap node module.",
 	"main": "create-node-module.js",
 	"scripts": {
@@ -37,6 +37,6 @@
 	},
 	"homepage": "https://github.com/volkovasystem/create-node-module#readme",
 	"dependencies": {
-		"format-package-json-file": "npm:@volkovasystem/format-package-json-file@0.0.7"
+		"format-package-json-file": "npm:@volkovasystem/format-package-json-file@0.0.8"
 	}
 }
