@@ -215,7 +215,11 @@ const TEST_SAMPLE_UNIT = (
 					strictAssert
 					.equal(
 						(
-							true
+							await	$moduleVariableNamespace(
+										(
+											true
+										)
+									)
 						),
 
 						(
