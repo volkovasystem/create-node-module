@@ -57,7 +57,7 @@ const $moduleVariableNamespace = (
 							"sampleParameter": "
 								[
 									@type:
-											string
+											boolean
 									@end-type
 								]
 							"
@@ -69,7 +69,7 @@ const $moduleVariableNamespace = (
 							"result": "
 								[
 									@type:
-											string
+											boolean
 									@end-type
 								]
 							"
