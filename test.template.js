@@ -11,6 +11,46 @@ const strictAssert = (
 const executeShellCommand = (
 	async	function executeShellCommand( shellCommand, moduleDirectoryPath ){
 				const childProcess = require( "child_process" );
+				const path = require( "path" );
+
+				const execAsync = (
+					util
+					.promisify(
+						(
+							childProcess
+							.exec
+						)
+					)
+				);
+
+				if(
+						(
+								typeof
+								moduleDirectoryPath
+							==	"string"
+						)
+
+					&&	(
+								moduleDirectoryPath
+								.length
+							>	0
+						)
+				){
+					moduleDirectoryPath = (
+						path
+						.resolve(
+							(
+								moduleDirectoryPath
+							)
+						)
+					);
+				}
+				else{
+					moduleDirectoryPath = (
+						process
+						.cwd( )
+					);
+				}
 
 				try{
 					const	{
@@ -18,13 +58,7 @@ const executeShellCommand = (
 								stderr
 							}
 						=	(
-								await	util
-										.promisify(
-											(
-												childProcess
-												.exec
-											)
-										)(
+								await	execAsync(
 											(
 												shellCommand
 											),
@@ -32,14 +66,7 @@ const executeShellCommand = (
 											(
 												{
 													"cwd": (
-															(
-																moduleDirectoryPath
-															)
-
-														||	(
-																process
-																.cwd( )
-															)
+														moduleDirectoryPath
 													)
 												}
 											)
@@ -208,6 +235,14 @@ const TEST_SAMPLE_UNIT = (
 				);
 
 				try{
+					const actualValue = (
+						await	$moduleVariableNamespace(
+									(
+										true
+									)
+								)
+					);
+
 					const testValue = (
 						true
 					);
@@ -215,11 +250,7 @@ const TEST_SAMPLE_UNIT = (
 					strictAssert
 					.equal(
 						(
-							await	$moduleVariableNamespace(
-										(
-											true
-										)
-									)
+							actualValue
 						),
 
 						(
@@ -232,7 +263,7 @@ const TEST_SAMPLE_UNIT = (
 
 								"test sample unit;",
 
-								`must assert to ${ testValue };`
+								`must assert to, ${ testValue };`
 							]
 						)
 					);
