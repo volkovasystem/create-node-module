@@ -153,23 +153,23 @@ const AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN = (
 	)
 );
 
-const GET_MODULE_VARIABLE_NAMESPACE_SHELL_COMMAND = (
+const GET_MODULE_VALUE_NAMESPACE_SHELL_SCRIPT = (
 	"basename $(git remote get-url origin) .git"
 );
 
-const GET_MODULE_DESCRIPTION_SHELL_COMMAND = (
+const GET_MODULE_DESCRIPTION_SHELL_SCRIPT = (
 	"sed '2q;d' {{ @module-directory-path }}/README.md"
 );
 
-const GET_AUTHOR_TITLE_NAMESPACE_SHELL_COMMAND = (
+const GET_AUTHOR_TITLE_NAMESPACE_SHELL_SCRIPT = (
 	"git log -1 --pretty=format:'%an'"
 );
 
-const GET_AUTHOR_CONTACT_DETAIL_SHELL_COMMAND = (
+const GET_AUTHOR_CONTACT_DETAIL_SHELL_SCRIPT = (
 	"git log -1 --pretty=format:'%ae'"
 );
 
-const GET_REPOSITORY_REMOTE_URL_PATH_SHELL_COMMAND = (
+const GET_REPOSITORY_REMOTE_URL_PATH_SHELL_SCRIPT = (
 	"git config --get remote.origin.url"
 );
 
@@ -201,8 +201,8 @@ const EDITORCONFIG_TEMPLATE_FILE_PATH = (
 	`${ __dirname }/editorconfig.template.txt`
 );
 
-const getShellCommandResult = (
-	async	function getShellCommandResult( shellCommand, moduleDirectoryPath ){
+const getShellScriptResult = (
+	async	function getShellScriptResult( shellScript, moduleDirectoryPath ){
 				const resultList = (
 					[ ]
 				);
@@ -212,7 +212,7 @@ const getShellCommandResult = (
 						childProcess
 						.exec(
 							(
-								shellCommand
+								shellScript
 							),
 
 							(
@@ -291,13 +291,49 @@ const createNodeModule = (
 								[
 									@type:
 											object with {
-												"moduleValueNamespace": "[@type:string;]",
-												"moduleScope": "[@type:string;]",
-												"moduleDescription": "[@type:string;]",
-												"authorTitleNamespace": "[@type:string;]",
-												"authorContactDetail": "[@type:string]"
+												"moduleValueNamespace": "
+													[
+														@type:
+																string
+														@end-type
+													]
+												",
+
+												"moduleScope": "
+													[
+														@type:
+																string
+														@end-type
+													]
+												",
+
+												"moduleDescription": "
+													[
+														@type:
+																string
+														@end-type
+													]
+												",
+
+												"authorTitleNamespace": "
+													[
+														@type:
+																string
+														@end-type
+													]
+												",
+
+												"authorContactDetail": "
+													[
+														@type:
+																string
+														@end-type
+													]
+												",
 											}
 									@end-type
+
+									<@optional;>
 								]
 							"
 						}
@@ -324,6 +360,7 @@ const createNodeModule = (
 									@end-type
 
 									<@tag:invalid-module-directory-path;>
+									<@tag:undefined-module-directory;>
 									<@tag:cannot-create-node-module;>
 								]
 							"
@@ -344,757 +381,16 @@ const createNodeModule = (
 									.length
 								>	1
 							)
-
-						&&	(
-									(
-										await	fsAsync
-												.stat(
-													(
-														moduleDirectoryPath
-													)
-												)
-									)
-									.isDirectory( )
-								===	true
-							)
 					){
-						option = (
-								(
-									option
-								)
-
-							||	(
-									{ }
-								)
-						);
-
-						const moduleValueNamespace = (
-								(
-										(
-												typeof
-												option
-												.moduleValueNamespace
-											==	"string"
-										)
-
-									&&	(
-												(
-													option
-													.moduleValueNamespace
-												)
-												.length
-											>	0
-										)
-								)
-							?	(
-									option
-									.moduleValueNamespace
-								)
-							:	(
-									await	getShellCommandResult(
-												(
-													GET_MODULE_VARIABLE_NAMESPACE_SHELL_COMMAND
-												),
-
-												(
-													moduleDirectoryPath
-												)
-											)
-								)
-						);
-
-						const moduleValueTitleNamespace = (
-							moduleValueNamespace
-							.replace(
-								(
-									/\-/g
-								),
-
-								(
-									" "
-								)
-							)
-						);
-
-						const moduleVariableNamespace = (
-							moduleValueNamespace
-							.replace(
-								(
-									/\-([a-z0-9])/g
-								),
-
-								(
-									( match ) => (
-										match
-										.slice(
-											(
-												1
-											)
-										)
-										.toUpperCase( )
+							moduleDirectoryPath
+						=	(
+								path
+								.resolve(
+									(
+										moduleDirectoryPath
 									)
 								)
-							)
-						);
-
-						const moduleScope = (
-								(
-										(
-												typeof
-												option
-												.moduleScope
-											==	"string"
-										)
-
-									&&	(
-												(
-													option
-													.moduleScope
-												)
-												.length
-											>	0
-										)
-								)
-							?	(
-									option
-									.moduleScope
-								)
-							:	(
-									undefined
-								)
-						);
-
-						const moduleDescription = (
-								(
-										(
-												typeof
-												option
-												.moduleDescription
-											==	"string"
-										)
-
-									&&	(
-												(
-													option
-													.moduleDescription
-												)
-												.length
-											>	0
-										)
-								)
-							?	(
-									option
-									.moduleDescription
-								)
-							:	(
-									await	getShellCommandResult(
-												(
-													GET_MODULE_DESCRIPTION_SHELL_COMMAND
-													.replace(
-														(
-															MODULE_DIRECTORY_PATH_REPLACER_PATTERN
-														),
-
-														(
-															path
-															.resolve(
-																(
-																	moduleDirectoryPath
-																)
-															)
-														)
-													)
-												),
-
-												(
-													moduleDirectoryPath
-												)
-											)
-								)
-						);
-
-						const authorTitleNamespace = (
-								(
-										(
-												typeof
-												option
-												.authorTitleNamespace
-											==	"string"
-										)
-
-									&&	(
-												(
-													option
-													.authorTitleNamespace
-												)
-												.length
-											>	0
-										)
-								)
-							?	(
-									option
-									.authorTitleNamespace
-								)
-							:	(
-									await	getShellCommandResult(
-												(
-													GET_AUTHOR_TITLE_NAMESPACE_SHELL_COMMAND
-												),
-
-												(
-													moduleDirectoryPath
-												)
-											)
-								)
-						);
-
-						const authorContactDetail = (
-								(
-										(
-												typeof
-												option
-												.authorContactDetail
-											==	"string"
-										)
-
-									&&	(
-												(
-													option
-													.authorContactDetail
-												)
-												.length
-											>	0
-										)
-								)
-							?	(
-									option
-									.authorContactDetail
-								)
-							:	(
-									await	getShellCommandResult(
-												(
-													GET_AUTHOR_CONTACT_DETAIL_SHELL_COMMAND
-												),
-
-												(
-													moduleDirectoryPath
-												)
-											)
-								)
-						);
-
-						const licenseYear = (
-							(
-								new	Date( )
-							)
-							.getFullYear( )
-						);
-
-						const repositoryRemoteURLPath = (
-							(
-								await	getShellCommandResult(
-											(
-												GET_REPOSITORY_REMOTE_URL_PATH_SHELL_COMMAND
-											),
-
-											(
-												moduleDirectoryPath
-											)
-										)
-							)
-							.replace(
-								(
-									".git"
-								),
-
-								(
-									""
-								)
-							)
-						);
-
-						const MODULE_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												MODULE_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-							.replace(
-								(
-									MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									moduleVariableNamespace
-								)
-							)
-							.replace(
-								(
-									MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									moduleValueNamespace
-								)
-							)
-							.replace(
-								(
-									MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									moduleValueTitleNamespace
-								)
-							)
-							.replace(
-								(
-									MODULE_DESCRIPTION_REPLACER_PATTERN
-								),
-
-								(
-									moduleDescription
-								)
-							)
-							.replace(
-								(
-									LICENSE_YEAR_REPLACER_PATTERN
-								),
-
-								(
-									licenseYear
-								)
-							)
-							.replace(
-								(
-									AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									authorTitleNamespace
-								)
-							)
-							.replace(
-								(
-									AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN
-								),
-
-								(
-									authorContactDetail
-								)
-							)
-						);
-
-						const TEST_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												TEST_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-							.replace(
-								(
-									MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									moduleValueNamespace
-								)
-							)
-							.replace(
-								(
-									MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									moduleVariableNamespace
-								)
-							)
-						);
-
-						const MIT_LICENSE_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												MIT_LICENSE_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-							.replace(
-								(
-									LICENSE_YEAR_REPLACER_PATTERN
-								),
-
-								(
-									licenseYear
-								)
-							)
-							.replace(
-								(
-									AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN
-								),
-
-								(
-									authorTitleNamespace
-								)
-							)
-							.replace(
-								(
-									AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN
-								),
-
-								(
-									authorContactDetail
-								)
-							)
-						);
-
-						const PACKAGE_TEMPLATE = (
-							Object
-							.assign(
-								(
-									{ }
-								),
-
-								(
-									JSON
-									.parse(
-										(
-											await	fsAsync
-													.readFile(
-														(
-															PACKAGE_TEMPLATE_FILE_PATH
-														),
-
-														(
-															"utf8"
-														)
-													)
-										)
-									)
-								),
-
-								(
-									{
-										"name": (
-												(
-														(
-																typeof
-																moduleScope
-															==	"string"
-														)
-
-													&&	(
-																moduleScope
-																.length
-															>	0
-														)
-												)
-											?	(
-													`@${ moduleScope }/${ moduleValueNamespace }`
-												)
-											:	(
-													moduleValueNamespace
-												)
-										),
-
-										"description": (
-											moduleDescription
-										),
-
-										"main": (
-											`${ moduleValueNamespace }.js`
-										),
-
-										"scripts": (
-											{
-												"test": (
-													`node ./${ moduleValueNamespace }.test.js`
-												)
-											}
-										),
-
-										"keywords": (
-											[
-												moduleValueNamespace
-											]
-											.concat(
-												(
-													moduleValueNamespace
-													.split(
-														(
-															"-"
-														)
-													)
-												)
-											)
-										),
-
-										"author": (
-											`${ authorTitleNamespace } <${ authorContactDetail }>`
-										),
-
-										"contributors": (
-											[
-												(
-													`${ authorTitleNamespace } <${ authorContactDetail }>`
-												)
-											]
-										),
-
-										"repository": (
-											{
-												"type": (
-													"git"
-												),
-
-												"url": (
-													`${ repositoryRemoteURLPath }.git`
-												)
-											}
-										),
-
-										"bugs": (
-											{
-												"url": (
-													`${ repositoryRemoteURLPath }/issues`
-												)
-											}
-										),
-
-										"homepage": (
-											`${ repositoryRemoteURLPath }#readme`
-										),
-									}
-								)
-							)
-						);
-
-						const GITIGNORE_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												GITIGNORE_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-						);
-
-						const NPMIGNORE_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												NPMIGNORE_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-						);
-
-						const EDITORCONFIG_TEMPLATE = (
-							(
-								await	fsAsync
-										.readFile(
-											(
-												EDITORCONFIG_TEMPLATE_FILE_PATH
-											),
-
-											(
-												"utf8"
-											)
-										)
-							)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													`${ moduleValueNamespace }.module.js`
-												)
-											)
-										),
-
-										(
-											MODULE_TEMPLATE
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													`${ moduleValueNamespace }.test.js`
-												)
-											)
-										),
-
-										(
-											TEST_TEMPLATE
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													"LICENSE"
-												)
-											)
-										),
-
-										(
-											MIT_LICENSE_TEMPLATE
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													"package.json"
-												)
-											)
-										),
-
-										(
-											JSON
-											.stringify(
-												(
-													PACKAGE_TEMPLATE
-												)
-											)
-										)
-									)
-						);
-
-						(
-							await	formatPackageJSONFile(
-										(
-											moduleDirectoryPath
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													".gitignore"
-												)
-											)
-										),
-
-										(
-											GITIGNORE_TEMPLATE
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													".npmignore"
-												)
-											)
-										),
-
-										(
-											NPMIGNORE_TEMPLATE
-										)
-									)
-						);
-
-						(
-							await	writeFile(
-										(
-											path
-											.resolve(
-												(
-													moduleDirectoryPath
-												),
-
-												(
-													".editorconfig"
-												)
-											)
-										),
-
-										(
-											EDITORCONFIG_TEMPLATE
-										)
-									)
-						);
-
-						return	(
-									true
-								);
+							);
 					}
 					else{
 						throw	(
@@ -1113,6 +409,770 @@ const createNodeModule = (
 										)
 								);
 					}
+
+					if(
+							(
+									(
+										await	fsAsync
+												.stat(
+													(
+														moduleDirectoryPath
+													)
+												)
+									)
+									.isDirectory( )
+								!==	true
+							)
+					){
+						throw	(
+									new	Error(
+											(
+												[
+													"#undefined-module-directory;",
+
+													"cannot create node module;",
+													"undefined module directory;",
+
+													"@module-directory-path:",
+													`${ moduleDirectoryPath };`
+												]
+											)
+										)
+								);
+					}
+
+					option = (
+							(
+								option
+							)
+
+						||	(
+								{ }
+							)
+					);
+
+					const moduleValueNamespace = (
+							(
+									(
+											typeof
+											option
+											.moduleValueNamespace
+										==	"string"
+									)
+
+								&&	(
+											(
+												option
+												.moduleValueNamespace
+											)
+											.length
+										>	0
+									)
+							)
+						?	(
+								option
+								.moduleValueNamespace
+							)
+						:	(
+								await	getShellScriptResult(
+											(
+												GET_MODULE_VALUE_NAMESPACE_SHELL_SCRIPT
+											),
+
+											(
+												moduleDirectoryPath
+											)
+										)
+							)
+					);
+
+					const moduleValueTitleNamespace = (
+						moduleValueNamespace
+						.replace(
+							(
+								/\-/g
+							),
+
+							(
+								" "
+							)
+						)
+					);
+
+					const moduleVariableNamespace = (
+						moduleValueNamespace
+						.replace(
+							(
+								/\-([a-z0-9])/g
+							),
+
+							(
+								( match ) => (
+									match
+									.slice(
+										(
+											1
+										)
+									)
+									.toUpperCase( )
+								)
+							)
+						)
+					);
+
+					const moduleScope = (
+							(
+									(
+											typeof
+											option
+											.moduleScope
+										==	"string"
+									)
+
+								&&	(
+											(
+												option
+												.moduleScope
+											)
+											.length
+										>	0
+									)
+							)
+						?	(
+								option
+								.moduleScope
+							)
+						:	(
+								undefined
+							)
+					);
+
+					const moduleDescription = (
+							(
+									(
+											typeof
+											option
+											.moduleDescription
+										==	"string"
+									)
+
+								&&	(
+											(
+												option
+												.moduleDescription
+											)
+											.length
+										>	0
+									)
+							)
+						?	(
+								option
+								.moduleDescription
+							)
+						:	(
+								await	getShellScriptResult(
+											(
+												GET_MODULE_DESCRIPTION_SHELL_SCRIPT
+												.replace(
+													(
+														MODULE_DIRECTORY_PATH_REPLACER_PATTERN
+													),
+
+													(
+														moduleDirectoryPath
+													)
+												)
+											),
+
+											(
+												moduleDirectoryPath
+											)
+										)
+							)
+					);
+
+					const authorTitleNamespace = (
+							(
+									(
+											typeof
+											option
+											.authorTitleNamespace
+										==	"string"
+									)
+
+								&&	(
+											(
+												option
+												.authorTitleNamespace
+											)
+											.length
+										>	0
+									)
+							)
+						?	(
+								option
+								.authorTitleNamespace
+							)
+						:	(
+								await	getShellScriptResult(
+											(
+												GET_AUTHOR_TITLE_NAMESPACE_SHELL_SCRIPT
+											),
+
+											(
+												moduleDirectoryPath
+											)
+										)
+							)
+					);
+
+					const authorContactDetail = (
+							(
+									(
+											typeof
+											option
+											.authorContactDetail
+										==	"string"
+									)
+
+								&&	(
+											(
+												option
+												.authorContactDetail
+											)
+											.length
+										>	0
+									)
+							)
+						?	(
+								option
+								.authorContactDetail
+							)
+						:	(
+								await	getShellScriptResult(
+											(
+												GET_AUTHOR_CONTACT_DETAIL_SHELL_SCRIPT
+											),
+
+											(
+												moduleDirectoryPath
+											)
+										)
+							)
+					);
+
+					const licenseYear = (
+						(
+							new	Date( )
+						)
+						.getFullYear( )
+					);
+
+					const repositoryRemoteURLPath = (
+						(
+							await	getShellScriptResult(
+										(
+											GET_REPOSITORY_REMOTE_URL_PATH_SHELL_SCRIPT
+										),
+
+										(
+											moduleDirectoryPath
+										)
+									)
+						)
+						.replace(
+							(
+								".git"
+							),
+
+							(
+								""
+							)
+						)
+					);
+
+					const MODULE_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											MODULE_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+						.replace(
+							(
+								MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								moduleVariableNamespace
+							)
+						)
+						.replace(
+							(
+								MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								moduleValueNamespace
+							)
+						)
+						.replace(
+							(
+								MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								moduleValueTitleNamespace
+							)
+						)
+						.replace(
+							(
+								MODULE_DESCRIPTION_REPLACER_PATTERN
+							),
+
+							(
+								moduleDescription
+							)
+						)
+						.replace(
+							(
+								LICENSE_YEAR_REPLACER_PATTERN
+							),
+
+							(
+								licenseYear
+							)
+						)
+						.replace(
+							(
+								AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								authorTitleNamespace
+							)
+						)
+						.replace(
+							(
+								AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN
+							),
+
+							(
+								authorContactDetail
+							)
+						)
+					);
+
+					const TEST_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											TEST_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+						.replace(
+							(
+								MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								moduleValueNamespace
+							)
+						)
+						.replace(
+							(
+								MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								moduleVariableNamespace
+							)
+						)
+					);
+
+					const MIT_LICENSE_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											MIT_LICENSE_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+						.replace(
+							(
+								LICENSE_YEAR_REPLACER_PATTERN
+							),
+
+							(
+								licenseYear
+							)
+						)
+						.replace(
+							(
+								AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN
+							),
+
+							(
+								authorTitleNamespace
+							)
+						)
+						.replace(
+							(
+								AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN
+							),
+
+							(
+								authorContactDetail
+							)
+						)
+					);
+
+					const PACKAGE_TEMPLATE = (
+						Object
+						.assign(
+							(
+								{ }
+							),
+
+							(
+								JSON
+								.parse(
+									(
+										await	fsAsync
+												.readFile(
+													(
+														PACKAGE_TEMPLATE_FILE_PATH
+													),
+
+													(
+														"utf8"
+													)
+												)
+									)
+								)
+							),
+
+							(
+								{
+									"name": (
+											(
+													(
+															typeof
+															moduleScope
+														==	"string"
+													)
+
+												&&	(
+															moduleScope
+															.length
+														>	0
+													)
+											)
+										?	(
+												`@${ moduleScope }/${ moduleValueNamespace }`
+											)
+										:	(
+												moduleValueNamespace
+											)
+									),
+
+									"description": (
+										moduleDescription
+									),
+
+									"main": (
+										`${ moduleValueNamespace }.js`
+									),
+
+									"scripts": (
+										{
+											"test": (
+												`node ./${ moduleValueNamespace }.test.js`
+											)
+										}
+									),
+
+									"keywords": (
+										[
+											moduleValueNamespace
+										]
+										.concat(
+											(
+												moduleValueNamespace
+												.split(
+													(
+														"-"
+													)
+												)
+											)
+										)
+									),
+
+									"author": (
+										`${ authorTitleNamespace } <${ authorContactDetail }>`
+									),
+
+									"contributors": (
+										[
+											(
+												`${ authorTitleNamespace } <${ authorContactDetail }>`
+											)
+										]
+									),
+
+									"repository": (
+										{
+											"type": (
+												"git"
+											),
+
+											"url": (
+												`${ repositoryRemoteURLPath }.git`
+											)
+										}
+									),
+
+									"bugs": (
+										{
+											"url": (
+												`${ repositoryRemoteURLPath }/issues`
+											)
+										}
+									),
+
+									"homepage": (
+										`${ repositoryRemoteURLPath }#readme`
+									),
+								}
+							)
+						)
+					);
+
+					const GITIGNORE_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											GITIGNORE_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+					);
+
+					const NPMIGNORE_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											NPMIGNORE_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+					);
+
+					const EDITORCONFIG_TEMPLATE = (
+						(
+							await	fsAsync
+									.readFile(
+										(
+											EDITORCONFIG_TEMPLATE_FILE_PATH
+										),
+
+										(
+											"utf8"
+										)
+									)
+						)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												`${ moduleValueNamespace }.module.js`
+											)
+										)
+									),
+
+									(
+										MODULE_TEMPLATE
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												`${ moduleValueNamespace }.test.js`
+											)
+										)
+									),
+
+									(
+										TEST_TEMPLATE
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												"LICENSE"
+											)
+										)
+									),
+
+									(
+										MIT_LICENSE_TEMPLATE
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												"package.json"
+											)
+										)
+									),
+
+									(
+										JSON
+										.stringify(
+											(
+												PACKAGE_TEMPLATE
+											)
+										)
+									)
+								)
+					);
+
+					(
+						await	formatPackageJSONFile(
+									(
+										moduleDirectoryPath
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												".gitignore"
+											)
+										)
+									),
+
+									(
+										GITIGNORE_TEMPLATE
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												".npmignore"
+											)
+										)
+									),
+
+									(
+										NPMIGNORE_TEMPLATE
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												".editorconfig"
+											)
+										)
+									),
+
+									(
+										EDITORCONFIG_TEMPLATE
+									)
+								)
+					);
+
+					return	(
+								true
+							);
 				}
 				catch( error ){
 					throw	(
