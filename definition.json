@@ -1,0 +1,431 @@
+{
+	"module": [
+		{
+			"title": "Create Node Module",
+			"description": [
+				"Fast bootstrap Node module."
+			],
+
+			"namespace": "create-node-module",
+			"alias": "",
+			"property": [
+				"createNodeModule"
+			],
+			"type": [
+				"procedure"
+			],
+
+			"format": [
+				"createNodeModule( moduleDirectoryPath, optionData );"
+			],
+			"sample": [
+				"await createNodeModule( './' );"
+			],
+
+			"parameter": [
+				{
+					"title": "Module Directory Path",
+					"description": [
+						"Set directory path to module."
+					],
+
+					"namespace": "module-directory-path",
+					"alias": "",
+					"property": [
+						"moduleDirectoryPath"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						"createNodeModule( moduleDirectoryPath );"
+					],
+					"sample": [
+						"await createNodeModule( './' );"
+					],
+
+					"required": true
+				},
+
+				{
+					"title": "Option Data",
+					"description": [
+						"Extended procedure parameter."
+					],
+
+					"namespace": "option-data",
+					"alias": "",
+					"property": [
+						"optionData"
+					],
+					"type": [
+						"object:with:[moduleValueNamespace]",
+						"object:with:[moduleScope]",
+						"object:with:[moduleDescription]",
+						"object:with:[authorTitleNamespace]",
+						"object:with:[authorContactDetail]"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				},
+
+				{
+					"title": "Module Value Namespace",
+					"description": [
+						"Set module value namespace."
+					],
+
+					"namespace": "option-data:module-value-namespace",
+					"alias": "",
+					"property": [
+						"optionData.moduleValueNamespace"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				},
+
+				{
+					"title": "Module Scope",
+					"description": [
+						"Set module scope."
+					],
+
+					"namespace": "option-data:module-scope",
+					"alias": "",
+					"property": [
+						"optionData.moduleScope"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				},
+
+				{
+					"title": "Module Description",
+					"description": [
+						"Set module description."
+					],
+
+					"namespace": "option-data:module-description",
+					"alias": "",
+					"property": [
+						"optionData.moduleDescription"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				},
+
+				{
+					"title": "Author Title Namespace",
+					"description": [
+						"Set author title namespace."
+					],
+
+					"namespace": "option-data:author-title-namespace",
+					"alias": "",
+					"property": [
+						"optionData.authorTitleNamespace"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				},
+
+				{
+					"title": "Author Contact Detail",
+					"description": [
+						"Set author contact detail."
+					],
+
+					"namespace": "option-data:author-contact-detail",
+					"alias": "",
+					"property": [
+						"optionData.authorContactDetail"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"optional": true
+				}
+			],
+
+			"result": [
+				{
+					"title": "Result",
+					"description": [
+						"Procedure result."
+					],
+
+					"namespace": "result",
+					"alias": "",
+					"property": [
+						"result"
+					],
+					"type": [
+						""
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					]
+				}
+			],
+
+			"trigger": [
+				{
+					"title": "Trigger",
+					"description": [
+						"Procedure trigger."
+					],
+
+					"namespace": "trigger",
+					"alias": "",
+					"property": [
+						"trigger"
+					],
+					"type": [
+						"object:as:Error"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"tag": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"title": "Create Node Module",
+			"description": [
+				"Fast bootstrap Node module."
+			],
+
+			"namespace": "create-node-module",
+			"alias": "cnm",
+			"type": [
+				"shell"
+			],
+
+			"format": [
+				"create-node-module",
+				"create-node-module --moduleDirectoryPath <moduleDirectoryPath>"
+			],
+			"sample": [
+				"create-node-module",
+				"create-node-module --moduleDirectoryPath ./"
+			],
+
+			"parameter": [
+				{
+					"title": "Version",
+					"description": [
+						"Show module version."
+					],
+
+					"namespace": "version",
+					"alias": "v",
+					"property": [
+						"versionStatus"
+					],
+					"type": [
+						"boolean"
+					],
+
+					"format": [
+						"--version",
+						"--v"
+					],
+					"sample": [
+						"create-node-module --version"
+					]
+				},
+
+				{
+					"title": "Help",
+					"description": [
+						"Show help module."
+					],
+
+					"namespace": "help",
+					"alias": "h",
+					"property": [
+						"helpStatus",
+						"helpShellParameter"
+					],
+					"type": [
+						"boolean",
+						"string"
+					],
+
+					"format": [
+						"--help [helpShellParameter]",
+						"--h [helpShellParameter]"
+					],
+					"sample": [
+						"create-node-module --help",
+						"create-node-module --help filePath"
+					]
+				},
+
+				{
+					"title": "Install Module",
+					"description": [
+						"Install module to global."
+					],
+
+					"namespace": "installModule",
+					"alias": "im",
+					"property": [
+						"installModuleStatus"
+					],
+					"type": [
+						"boolean"
+					],
+
+					"format": [
+						"--installModule",
+						"--im"
+					],
+					"sample": [
+						"create-node-module --installModule"
+					]
+				},
+
+				{
+					"title": "Link Module",
+					"description": [
+						"Link module to global."
+					],
+
+					"namespace": "linkModule",
+					"alias": "lm",
+					"property": [
+						"linkModuleStatus"
+					],
+					"type": [
+						"boolean"
+					],
+
+					"format": [
+						"--linkModule",
+						"--lm"
+					],
+					"sample": [
+						"create-node-module --installModule --linkModule"
+					]
+				},
+
+				{
+					"title": "Uninstall Module",
+					"description": [
+						"Uninstall module from global."
+					],
+
+					"namespace": "uninstallModule",
+					"alias": "um",
+					"property": [
+						"uninstallModuleStatus"
+					],
+					"type": [
+						"boolean"
+					],
+
+					"format": [
+						"--uninstallModule",
+						"--um"
+					],
+					"sample": [
+						"create-node-module --uninstallModule"
+					]
+				},
+
+				{
+					"title": "Module Directory Path",
+					"description": [
+						"Set directory path to module."
+					],
+
+					"namespace": "moduleDirectoryPath",
+					"alias": "mdp",
+					"property": [
+						"moduleDirectoryPath"
+					],
+					"type": [
+						"string"
+					],
+
+					"format": [
+						"--moduleDirectoryPath",
+						"--mdp"
+					],
+					"sample": [
+						"create-node-module --moduleDirectoryPath ./"
+					]
+				}
+			]
+		}
+	]
+}
