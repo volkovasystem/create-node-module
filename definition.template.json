@@ -1,0 +1,108 @@
+{
+	"module": [
+		{
+			"title": "{{ @module-title-namespace }}",
+			"description": [
+				"{{ @module-description }}"
+			],
+
+			"namespace": "{{ @module-value-namespace }}",
+			"alias": "",
+			"property": [
+				"$moduleVariableNamespace"
+			],
+			"type": [
+				"procedure"
+			],
+
+			"format": [
+				""
+			],
+			"sample": [
+				""
+			],
+
+			"parameter": [
+				{
+					"title": "",
+					"description": [
+						""
+					],
+
+					"namespace": "",
+					"alias": "",
+					"property": [
+						""
+					],
+					"type": [
+						""
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"required": false,
+					"optional": true
+				}
+			],
+
+			"result": [
+				{
+					"title": "Result",
+					"description": [
+						"Procedure result."
+					],
+
+					"namespace": "result",
+					"alias": "",
+					"property": [
+						"result"
+					],
+					"type": [
+						""
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					]
+				}
+			],
+
+			"trigger": [
+				{
+					"title": "Trigger",
+					"description": [
+						"Procedure trigger."
+					],
+
+					"namespace": "trigger",
+					"alias": "",
+					"property": [
+						"trigger"
+					],
+					"type": [
+						"object:as:Error"
+					],
+
+					"format": [
+						""
+					],
+					"sample": [
+						""
+					],
+
+					"tag": [
+						""
+					]
+				}
+			]
+		}
+	]
+}
