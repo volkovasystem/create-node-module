@@ -1,6 +1,7 @@
 {
 	"name": "@volkovasystem/create-node-module",
-	"version": "0.0.10",
+	"alias": "create-node-module",
+	"version": "0.0.11",
 	"description": "Fast bootstrap node module.",
 	"main": "create-node-module.js",
 	"scripts": {
@@ -12,10 +13,12 @@
 		"test": "node ./create-node-module.test.js",
 		"stage": "npm run reset && npm install && npm run build && npm test && npm run clean",
 		"prepublishOnly": "npm run stage",
-		"create-node-module": "node ./create-node-module.run.js"
+		"create-node-module": "node ./create-node-module.run.js",
+		"cnm": "node ./create-node-module.run.js"
 	},
 	"bin": {
-		"create-node-module": "create-node-module.run.js"
+		"create-node-module": "create-node-module.run.js",
+		"cnm": "create-node-module.run.js"
 	},
 	"repository": {
 		"type": "git",
@@ -37,6 +40,7 @@
 	},
 	"homepage": "https://github.com/volkovasystem/create-node-module#readme",
 	"dependencies": {
-		"format-package-json-file": "npm:@volkovasystem/format-package-json-file@0.0.8"
+		"format-json-file": "npm:@volkovasystem/format-json-file@0.0.16",
+		"format-package-json-file": "npm:@volkovasystem/format-package-json-file@0.0.10"
 	}
 }
