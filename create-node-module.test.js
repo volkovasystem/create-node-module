@@ -1,6 +1,6 @@
 "use strict";
 
-//; @template-engine-code-space;
+//;	@code-space:template-engine:
 const assert = require( "assert" );
 const util = require( "util" );
 
@@ -9,7 +9,7 @@ const strictAssert = (
 	.strict
 );
 
-//; @check-directory-procedure;
+//;	@procedure:check-directory:
 const checkDirectory = (
 	async	function checkDirectory( directoryPath ){
 					const fs = require( "fs" );
@@ -20,15 +20,17 @@ const checkDirectory = (
 						.promises
 					);
 
-						directoryPath
-					=	(
-							path
-							.resolve(
-								(
-									directoryPath
+					(
+							directoryPath
+						=	(
+								path
+								.resolve(
+									(
+										directoryPath
+									)
 								)
 							)
-						);
+					);
 
 					try{
 						return	(
@@ -50,9 +52,9 @@ const checkDirectory = (
 					}
 			}
 );
-//; @end-check-directory-procedure;
+//;	@procedure:check-directory;
 
-//; @check-file-procedure;
+//;	@procedure:check-file:
 const checkFile = (
 	async	function checkFile( filePath ){
 					const fs = require( "fs" );
@@ -63,15 +65,17 @@ const checkFile = (
 						.promises
 					);
 
-						filePath
-					=	(
-							path
-							.resolve(
-								(
-									filePath
+					(
+							filePath
+						=	(
+								path
+								.resolve(
+									(
+										filePath
+									)
 								)
 							)
-						);
+					);
 
 					try{
 						return	(
@@ -93,9 +97,9 @@ const checkFile = (
 					}
 			}
 );
-//; @end-check-file-procedure;
+//;	@procedure:check-file;
 
-//;	@get-directory-file-list-procedure;
+//;	@procedure:get-directory-file-list:
 const getDirectoryFileList = (
 	async	function getDirectoryFileList( directoryPath ){
 				const fs = require( "fs" );
@@ -106,15 +110,17 @@ const getDirectoryFileList = (
 					.promises
 				);
 
-					directoryPath
-				=	(
-						path
-						.resolve(
-							(
-								directoryPath
+				(
+						directoryPath
+					=	(
+							path
+							.resolve(
+								(
+									directoryPath
+								)
 							)
 						)
-					);
+				);
 
 				try{
 					return	(
@@ -141,8 +147,9 @@ const getDirectoryFileList = (
 				}
 			}
 );
-//; @end-get-directory-file-list-procedure;
+//;	@procedure:get-directory-file-list;
 
+//;	@procedure:execute-shell-script:
 const executeShellScript = (
 	async	function executeShellScript( shellScript, moduleDirectoryPath ){
 				const childProcess = require( "child_process" );
@@ -171,19 +178,25 @@ const executeShellScript = (
 							>	0
 						)
 				){
-					moduleDirectoryPath = (
-						path
-						.resolve(
-							(
-								moduleDirectoryPath
+					(
+							moduleDirectoryPath
+						=	(
+								path
+								.resolve(
+									(
+										moduleDirectoryPath
+									)
+								)
 							)
-						)
 					);
 				}
 				else{
-					moduleDirectoryPath = (
-						process
-						.cwd( )
+					(
+							moduleDirectoryPath
+						=	(
+								process
+								.cwd( )
+							)
 					);
 				}
 
@@ -238,7 +251,9 @@ const executeShellScript = (
 				}
 			}
 );
+//;	@procedure:execute-shell-script;
 
+//;	@procedure:setup-test-directory:
 const SETUP_TEST_DIRECTORY = (
 	async	function SETUP_TEST_DIRECTORY( ){
 				const shellParameterList = (
@@ -296,7 +311,9 @@ const SETUP_TEST_DIRECTORY = (
 						);
 			}
 );
+//;	@procedure:setup-test-directory;
 
+//;	@procedure:clean-test-directory:
 const CLEAN_TEST_DIRECTORY = (
 	async	function CLEAN_TEST_DIRECTORY( ){
 				const shellParameterList = (
@@ -354,7 +371,8 @@ const CLEAN_TEST_DIRECTORY = (
 						);
 			}
 );
-//; @end-template-engine-code-space;
+//;	@procedure:clean-test-directory;
+//;	@code-space:template-engine;
 
 const createNodeModule = (
 	require( "./create-node-module.js" )
@@ -520,6 +538,7 @@ const TEST_CREATE_NODE_MODULE_FILE_LIST = (
 							".editorconfig",
 							".gitignore",
 							".npmignore",
+							"definition.json",
 							"LICENSE",
 							"package.json",
 							"README.md",
