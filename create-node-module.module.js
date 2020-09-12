@@ -1,27 +1,18 @@
 "use strict";
 
 /*;
-	@license;
-	@module-license:
+	@license:module:
 		MIT License
 
 		Copyright (c) 2020-present Richeve S. Bebedor <richeve.bebedor@gmail.com>
 
-		@copyright:
+		@license:copyright:
 			Richeve S. Bebedor
 
-			<
-				@license-year-range:
-					2020-present
-				@end-license-year-range
-			>
+			<@license:year-range:2020-present;>
 
-			<
-				@contact-detail:
-					richeve.bebedor@gmail.com
-				@end-contact-detail
-			>
-		@end-copyright
+			<@license:contact-detail:richeve.bebedor@gmail.com;>
+		@license:copyright;
 
 		Permission is hereby granted, free of charge, to any person obtaining a copy
 		of this software and associated documentation files (the "Software"), to deal
@@ -40,333 +31,370 @@
 		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
-	@end-module-license
+	@license:module;
 */
 
-const childProcess = require( "child_process" );
-const fs = require( "fs" );
-const path = require( "path" );
-const util = require( "util" );
+const createNodeModule = (
+	async	function createNodeModule( moduleDirectoryPath, optionData ){
+				/*;
+					@definition:
+						@procedure:#createNodeModule
+							@description:
+								Fast bootstrap Node module.
+							@description;
+						@procedure;
 
-const formatPackageJSONFile = (
-	require( "format-package-json-file" )
-);
+						@parameter:#moduleDirectoryPath
+							@type:
+									string
+							@type;
 
-const fsAsync = (
-	fs
-	.promises
-);
+							@description:
+							@description;
 
-const MODULE_DIRECTORY_PATH_REPLACER_PATTERN = (
-	new	RegExp(
-			(
-				"{{ @module-directory-path }}"
-			),
+							@required;
+						@parameter;
 
-			(
-				"gm"
-			)
-		)
-);
+						@parameter:#optionData
+							@type:
+									object:with:[
+										moduleValueNamespace,
+										moduleScope,
+										moduleDescription,
+										authorTitleNamespace,
+										authorContactDetail
+									]
+							@type;
 
-const MODULE_VALUE_NAMESPACE_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @module-value-namespace }}"
-		),
+							@description:
+							@description;
 
-		(
-			"gm"
-		)
-	)
-);
+							@optional;
+						@parameter;
 
-const MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @module-value-title-namespace }}"
-		),
+						@parameter:#optionData.moduleValueNamespace
+							@type:
+									string
+							@type;
 
-		(
-			"gm"
-		)
-	)
-);
+							@description:
+							@description;
 
-const MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"\\$moduleVariableNamespace"
-		),
+							@optional;
+						@parameter;
 
-		(
-			"gm"
-		)
-	)
-);
+						@parameter:#optionData.moduleScope
+							@type:
+									string
+							@type;
 
-const MODULE_DESCRIPTION_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @module-description }}"
-		),
+							@description:
+							@description;
 
-		(
-			"gm"
-		)
-	)
-);
+							@optional;
+						@parameter;
 
-const LICENSE_YEAR_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @license-year }}"
-		),
+						@parameter:#optionData.moduleDescription
+							@type:
+									string
+							@type;
 
-		(
-			"gm"
-		)
-	)
-);
+							@description:
+							@description;
 
-const AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @author-title-namespace }}"
-		),
+							@optional;
+						@parameter;
 
-		(
-			"gm"
-		)
-	)
-);
+						@parameter:#optionData.authorTitleNamespace
+							@type:
+									string
+							@type;
 
-const AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN = (
-	new	RegExp(
-		(
-			"{{ @author-contact-detail }}"
-		),
+							@description:
+							@description;
 
-		(
-			"gm"
-		)
-	)
-);
+							@optional;
+						@parameter;
 
-const GET_MODULE_VALUE_NAMESPACE_SHELL_SCRIPT = (
-	"basename $(git remote get-url origin) .git"
-);
+						@parameter:#optionData.authorContactDetail
+							@type:
+									string
+							@type;
 
-const GET_MODULE_DESCRIPTION_SHELL_SCRIPT = (
-	"sed '2q;d' {{ @module-directory-path }}/README.md"
-);
+							@description:
+							@description;
 
-const GET_AUTHOR_TITLE_NAMESPACE_SHELL_SCRIPT = (
-	"git log -1 --pretty=format:'%an'"
-);
+							@optional;
+						@parameter;
 
-const GET_AUTHOR_CONTACT_DETAIL_SHELL_SCRIPT = (
-	"git log -1 --pretty=format:'%ae'"
-);
+						@result:#result
+							@type:
+									boolean
+							@type;
 
-const GET_REPOSITORY_REMOTE_URL_PATH_SHELL_SCRIPT = (
-	"git config --get remote.origin.url"
-);
+							@description:
+							@description;
+						@result;
 
-const MODULE_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/module.template.js`
-);
+						@trigger:#trigger
+							@type:
+									object:as:Error
+							@type;
 
-const TEST_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/test.template.js`
-);
+							@description:
+							@description;
 
-const MIT_LICENSE_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/mit-license.template.txt`
-);
+							@tag:#invalid-module-directory-path;
+							@tag:#undefined-module-directory;
+							@tag:#cannot-create-node-module;
+						@trigger;
+					@definition;
+				*/
 
-const PACKAGE_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/package.template.json`
-);
+				const childProcess = require( "child_process" );
+				const fs = require( "fs" );
+				const path = require( "path" );
+				const util = require( "util" );
 
-const GITIGNORE_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/gitignore.template.txt`
-);
-
-const NPMIGNORE_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/npmignore.template.txt`
-);
-
-const EDITORCONFIG_TEMPLATE_FILE_PATH = (
-	`${ __dirname }/editorconfig.template.txt`
-);
-
-const getShellScriptResult = (
-	async	function getShellScriptResult( shellScript, moduleDirectoryPath ){
-				const resultList = (
-					[ ]
+				const formatJSONFile = (
+					require( "format-json-file" )
 				);
 
-				for await (
-					const result of (
-						childProcess
-						.exec(
+				const formatPackageJSONFile = (
+					require( "format-package-json-file" )
+				);
+
+				const fsAsync = (
+					fs
+					.promises
+				);
+
+				const MODULE_DIRECTORY_PATH_REPLACER_PATTERN = (
+					new	RegExp(
 							(
-								shellScript
+								"{{ @module-directory-path }}"
 							),
 
 							(
-								{
-									"cwd": (
-										moduleDirectoryPath
-									)
-								}
+								"gm"
 							)
 						)
-						.stdout
-					)
-				){
-					resultList
-					.push(
+				);
+
+				const MODULE_VALUE_NAMESPACE_REPLACER_PATTERN = (
+					new	RegExp(
 						(
-							result
-							.trim( )
+							"{{ @module-value-namespace }}"
+						),
+
+						(
+							"gm"
 						)
-					);
-				}
+					)
+				);
 
-				return	(
-							resultList
-							.join(
-								(
-									""
-								)
-							)
-							.trim( )
-						);
-			}
-);
+				const MODULE_VALUE_TITLE_NAMESPACE_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @module-value-title-namespace }}"
+						),
 
-const writeFile = (
-	async	function writeFile( filePath, fileContent ){
-				return	(
-							await	fsAsync
-									.writeFile(
-										(
-											filePath
-										),
+						(
+							"gm"
+						)
+					)
+				);
 
-										(
-											fileContent
-										),
+				const MODULE_TITLE_NAMESPACE_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @module-title-namespace }}"
+						),
 
-										(
-											"utf8"
+						(
+							"gm"
+						)
+					)
+				);
+
+				const MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"\\$moduleVariableNamespace"
+						),
+
+						(
+							"gm"
+						)
+					)
+				);
+
+				const MODULE_DESCRIPTION_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @module-description }}"
+						),
+
+						(
+							"gm"
+						)
+					)
+				);
+
+				const LICENSE_YEAR_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @license-year }}"
+						),
+
+						(
+							"gm"
+						)
+					)
+				);
+
+				const AUTHOR_TITLE_NAMESPACE_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @author-title-namespace }}"
+						),
+
+						(
+							"gm"
+						)
+					)
+				);
+
+				const AUTHOR_CONTACT_DETAIL_REPLACER_PATTERN = (
+					new	RegExp(
+						(
+							"{{ @author-contact-detail }}"
+						),
+
+						(
+							"gm"
+						)
+					)
+				);
+
+				const GET_MODULE_VALUE_NAMESPACE_SHELL_SCRIPT = (
+					"basename $(git remote get-url origin) .git"
+				);
+
+				const GET_MODULE_DESCRIPTION_SHELL_SCRIPT = (
+					"sed '2q;d' {{ @module-directory-path }}/README.md"
+				);
+
+				const GET_AUTHOR_TITLE_NAMESPACE_SHELL_SCRIPT = (
+					"git log -1 --pretty=format:'%an'"
+				);
+
+				const GET_AUTHOR_CONTACT_DETAIL_SHELL_SCRIPT = (
+					"git log -1 --pretty=format:'%ae'"
+				);
+
+				const GET_REPOSITORY_REMOTE_URL_PATH_SHELL_SCRIPT = (
+					"git config --get remote.origin.url"
+				);
+
+				const MODULE_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/module.template.js`
+				);
+
+				const TEST_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/test.template.js`
+				);
+
+				const MIT_LICENSE_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/mit-license.template.txt`
+				);
+
+				const PACKAGE_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/package.template.json`
+				);
+
+				const DEFINITION_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/definition.template.json`
+				);
+
+				const GITIGNORE_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/gitignore.template.txt`
+				);
+
+				const NPMIGNORE_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/npmignore.template.txt`
+				);
+
+				const EDITORCONFIG_TEMPLATE_FILE_PATH = (
+					`${ __dirname }/editorconfig.template.txt`
+				);
+
+				const getShellScriptResult = (
+					async	function getShellScriptResult( shellScript, moduleDirectoryPath ){
+								const resultList = (
+									[ ]
+								);
+
+								for await (
+									const result of (
+										childProcess
+										.exec(
+											(
+												shellScript
+											),
+
+											(
+												{
+													"cwd": (
+														moduleDirectoryPath
+													)
+												}
+											)
 										)
+										.stdout
 									)
-						);
-			}
-);
+								){
+									resultList
+									.push(
+										(
+											result
+											.trim( )
+										)
+									);
+								}
 
-const createNodeModule = (
-	async	function createNodeModule( moduleDirectoryPath, option ){
-				/*;
-					@procedure-definition:
-						Fast bootstrap node module.
-					@end-procedure-definition
+								return	(
+											resultList
+											.join(
+												(
+													""
+												)
+											)
+											.trim( )
+										);
+							}
+				);
 
-					@parameter-definition:
-						{
-							"moduleDirectoryPath": "
-								[
-									@type:
-											string
-									@end-type
+				const writeFile = (
+					async	function writeFile( filePath, fileContent ){
+								return	(
+											await	fsAsync
+													.writeFile(
+														(
+															filePath
+														),
 
-									<@required;>
-								]
-							",
+														(
+															fileContent
+														),
 
-							"option": "
-								[
-									@type:
-											object with {
-												"moduleValueNamespace": "
-													[
-														@type:
-																string
-														@end-type
-													]
-												",
-
-												"moduleScope": "
-													[
-														@type:
-																string
-														@end-type
-													]
-												",
-
-												"moduleDescription": "
-													[
-														@type:
-																string
-														@end-type
-													]
-												",
-
-												"authorTitleNamespace": "
-													[
-														@type:
-																string
-														@end-type
-													]
-												",
-
-												"authorContactDetail": "
-													[
-														@type:
-																string
-														@end-type
-													]
-												",
-											}
-									@end-type
-
-									<@optional;>
-								]
-							"
-						}
-					@end-parameter-definition
-
-					@result-definition:
-						{
-							"result": "
-								[
-									@type:
-											boolean
-									@end-type
-								]
-							"
-						}
-					@end-result-definition
-
-					@trigger-definition:
-						{
-							"trigger": "
-								[
-									@type:
-											object as Error
-									@end-type
-
-									<@tag:invalid-module-directory-path;>
-									<@tag:undefined-module-directory;>
-									<@tag:cannot-create-node-module;>
-								]
-							"
-						}
-					@end-trigger-definition
-				*/
+														(
+															"utf8"
+														)
+													)
+										);
+							}
+				);
 
 				try{
 					if(
@@ -382,15 +410,17 @@ const createNodeModule = (
 								>	1
 							)
 					){
-							moduleDirectoryPath
-						=	(
-								path
-								.resolve(
-									(
-										moduleDirectoryPath
+						(
+								moduleDirectoryPath
+							=	(
+									path
+									.resolve(
+										(
+											moduleDirectoryPath
+										)
 									)
 								)
-							);
+						);
 					}
 					else{
 						throw	(
@@ -441,13 +471,16 @@ const createNodeModule = (
 								);
 					}
 
-					option = (
-							(
-								option
-							)
+					(
+							optionData
+						=	(
+									(
+										optionData
+									)
 
-						||	(
-								{ }
+								||	(
+										{ }
+									)
 							)
 					);
 
@@ -455,14 +488,14 @@ const createNodeModule = (
 							(
 									(
 											typeof
-											option
+											optionData
 											.moduleValueNamespace
 										==	"string"
 									)
 
 								&&	(
 											(
-												option
+												optionData
 												.moduleValueNamespace
 											)
 											.length
@@ -470,7 +503,7 @@ const createNodeModule = (
 									)
 							)
 						?	(
-								option
+								optionData
 								.moduleValueNamespace
 							)
 						:	(
@@ -495,6 +528,22 @@ const createNodeModule = (
 
 							(
 								" "
+							)
+						)
+					);
+
+					const moduleTitleNamespace = (
+						moduleValueTitleNamespace
+						.replace(
+							(
+								/^([a-z])|(\s[a-z])/g
+							),
+
+							(
+								( match ) => (
+									match
+									.toUpperCase( )
+								)
 							)
 						)
 					);
@@ -524,14 +573,14 @@ const createNodeModule = (
 							(
 									(
 											typeof
-											option
+											optionData
 											.moduleScope
 										==	"string"
 									)
 
 								&&	(
 											(
-												option
+												optionData
 												.moduleScope
 											)
 											.length
@@ -539,7 +588,7 @@ const createNodeModule = (
 									)
 							)
 						?	(
-								option
+								optionData
 								.moduleScope
 							)
 						:	(
@@ -551,14 +600,14 @@ const createNodeModule = (
 							(
 									(
 											typeof
-											option
+											optionData
 											.moduleDescription
 										==	"string"
 									)
 
 								&&	(
 											(
-												option
+												optionData
 												.moduleDescription
 											)
 											.length
@@ -566,7 +615,7 @@ const createNodeModule = (
 									)
 							)
 						?	(
-								option
+								optionData
 								.moduleDescription
 							)
 						:	(
@@ -595,14 +644,14 @@ const createNodeModule = (
 							(
 									(
 											typeof
-											option
+											optionData
 											.authorTitleNamespace
 										==	"string"
 									)
 
 								&&	(
 											(
-												option
+												optionData
 												.authorTitleNamespace
 											)
 											.length
@@ -610,7 +659,7 @@ const createNodeModule = (
 									)
 							)
 						?	(
-								option
+								optionData
 								.authorTitleNamespace
 							)
 						:	(
@@ -630,14 +679,14 @@ const createNodeModule = (
 							(
 									(
 											typeof
-											option
+											optionData
 											.authorContactDetail
 										==	"string"
 									)
 
 								&&	(
 											(
-												option
+												optionData
 												.authorContactDetail
 											)
 											.length
@@ -645,7 +694,7 @@ const createNodeModule = (
 									)
 							)
 						?	(
-								option
+								optionData
 								.authorContactDetail
 							)
 						:	(
@@ -893,6 +942,10 @@ const createNodeModule = (
 											)
 									),
 
+									"alias": (
+										moduleValueNamespace
+									),
+
 									"description": (
 										moduleDescription
 									),
@@ -961,6 +1014,71 @@ const createNodeModule = (
 										`${ repositoryRemoteURLPath }#readme`
 									),
 								}
+							)
+						)
+					);
+
+					const DEFINITION_TEMPLATE = (
+						Object
+						.assign(
+							(
+								{ }
+							),
+
+							(
+								JSON
+								.parse(
+									(
+										(
+											await	fsAsync
+													.readFile(
+														(
+															DEFINITION_TEMPLATE_FILE_PATH
+														),
+
+														(
+															"utf8"
+														)
+													)
+										)
+										.replace(
+											(
+												MODULE_TITLE_NAMESPACE_REPLACER_PATTERN
+											),
+
+											(
+												moduleTitleNamespace
+											)
+										)
+										.replace(
+											(
+												MODULE_DESCRIPTION_REPLACER_PATTERN
+											),
+
+											(
+												moduleDescription
+											)
+										)
+										.replace(
+											(
+												MODULE_VALUE_NAMESPACE_REPLACER_PATTERN
+											),
+
+											(
+												moduleValueNamespace
+											)
+										)
+										.replace(
+											(
+												MODULE_VARIABLE_NAMESPACE_REPLACER_PATTERN
+											),
+
+											(
+												moduleVariableNamespace
+											)
+										)
+									)
+								)
 							)
 						)
 					);
@@ -1103,6 +1221,49 @@ const createNodeModule = (
 						await	formatPackageJSONFile(
 									(
 										moduleDirectoryPath
+									)
+								)
+					);
+
+					(
+						await	writeFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												"definition.json"
+											)
+										)
+									),
+
+									(
+										JSON
+										.stringify(
+											(
+												DEFINITION_TEMPLATE
+											)
+										)
+									)
+								)
+					);
+
+					(
+						await	formatJSONFile(
+									(
+										path
+										.join(
+											(
+												moduleDirectoryPath
+											),
+
+											(
+												"definition.json"
+											)
+										)
 									)
 								)
 					);
