@@ -1,2 +1,3 @@
 # create-node-module
-Fast bootstrap node module.
+
+Fast bootstrap Node module.

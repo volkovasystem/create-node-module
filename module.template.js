@@ -1,27 +1,18 @@
 "use strict";
 
 /*;
-	@license;
-	@module-license:
+	@license:module:
 		MIT License
 
 		Copyright (c) {{ @license-year }}-present {{ @author-title-namespace }} <{{ @author-contact-detail }}>
 
-		@copyright:
+		@license:copyright:
 			{{ @author-title-namespace }}
 
-			<
-				@license-year-range:
-					{{ @license-year }}-present
-				@end-license-year-range
-			>
+			<@license:year-range:{{ @license-year }}-present;>
 
-			<
-				@contact-detail:
-					{{ @author-contact-detail }}
-				@end-contact-detail
-			>
-		@end-copyright
+			<@license:contact-detail:{{ @author-contact-detail }};>
+		@license:copyright;
 
 		Permission is hereby granted, free of charge, to any person obtaining a copy
 		of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +31,7 @@
 		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 		SOFTWARE.
-	@end-module-license
+	@license:module;
 */
 
 const util = require( "util" );
@@ -48,47 +39,42 @@ const util = require( "util" );
 const $moduleVariableNamespace = (
 	async	function $moduleVariableNamespace( sampleParameter ){
 				/*;
-					@procedure-definition:
-						{{ @module-description }}
-					@end-procedure-definition
+					@definition:
+						@procedure:#$moduleVariableNamespace
+							@description:
+								{{ @module-description }}
+							@description;
+						@procedure;
 
-					@parameter-definition:
-						{
-							"sampleParameter": "
-								[
-									@type:
-											boolean
-									@end-type
-								]
-							"
-						}
-					@end-parameter-definition
+						@parameter:#sampleParameter
+							@type:
+									boolean
+							@type;
 
-					@result-definition:
-						{
-							"result": "
-								[
-									@type:
-											boolean
-									@end-type
-								]
-							"
-						}
-					@end-result-definition
+							@description:
+							@description;
+						@parameter;
 
-					@trigger-definition:
-						{
-							"trigger": "
-								[
-									@type:
-											object as Error
-									@end-type
+						@result:#result
+							@type:
+									boolean
+							@type;
 
-									<@tag:cannot-{{ @module-value-namespace }};>
-								]
-							"
-						}
-					@end-trigger-definition
+							@description:
+							@description;
+						@result;
+
+						@trigger:#trigger
+							@type:
+									object:as:Error
+							@type;
+
+							@description:
+							@description;
+
+							@tag:#cannot-{{ @module-value-namespace }};
+						@trigger;
+					@definition;
 				*/
 
 				try{
