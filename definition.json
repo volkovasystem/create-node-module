@@ -374,7 +374,7 @@
 						"--lm"
 					],
 					"sample": [
-						"create-node-module --installModule --linkModule"
+						"create-node-module --linkModule"
 					]
 				},
 

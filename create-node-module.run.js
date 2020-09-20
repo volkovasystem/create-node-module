@@ -1066,11 +1066,9 @@
 						===	true
 					);
 
-					resolveShellResult(
-						(
-							installModuleResult
-						)
-					);
+					return	(
+								installModuleResult
+							)
 				}
 				//;	@procedure:install-module;
 
@@ -1120,11 +1118,9 @@
 						===	true
 					);
 
-					resolveShellResult(
-						(
-							linkModuleResult
-						)
-					);
+					return	(
+								linkModuleResult
+							);
 				}
 				//;	@procedure:link-module;
 
