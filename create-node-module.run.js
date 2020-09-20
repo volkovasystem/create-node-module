@@ -1042,24 +1042,6 @@
 														]
 													)
 												)
-												.concat(
-													(
-														[
-															"&&"
-														]
-													)
-												)
-												.concat(
-													(
-														[
-															"npm link",
-
-															`${ packageData.name }`,
-
-															"|| true"
-														]
-													)
-												)
 											)
 										)
 							)
@@ -1110,7 +1092,9 @@
 												[
 													"npm link",
 
-													`${ packageData.name }`
+													`${ packageData.name }`,
+
+													"|| true"
 												]
 											)
 										)
