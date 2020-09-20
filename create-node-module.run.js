@@ -1054,7 +1054,7 @@
 														[
 															"cd",
 
-															`$(npm config get prefix)/lib/node_modules/${ packageData.alias }`
+															`$(npm config get prefix)/lib`
 														]
 													)
 												)
