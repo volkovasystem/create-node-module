@@ -1042,6 +1042,40 @@
 														]
 													)
 												)
+												.concat(
+													(
+														[
+															"&&"
+														]
+													)
+												)
+												.concat(
+													(
+														[
+															"cd",
+
+															`$(npm config get prefix)/lib/node_modules/${ packageData.name }`
+														]
+													)
+												)
+												.concat(
+													(
+														[
+															"&&"
+														]
+													)
+												)
+												.concat(
+													(
+														[
+															"npm link",
+
+															`${ packageData.name }`,
+
+															"|| true"
+														]
+													)
+												)
 											)
 										)
 							)
