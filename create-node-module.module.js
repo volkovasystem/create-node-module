@@ -282,7 +282,7 @@ const createNodeModule = (
 				);
 
 				const GET_MODULE_DESCRIPTION_SHELL_SCRIPT = (
-					"sed '/^\s*$/d' {{ @module-directory-path }}/README.md | sed '2q;d'"
+					"sed '/^\\s*$/d' {{ @module-directory-path }}/README.md | sed '2q;d'"
 				);
 
 				const GET_AUTHOR_TITLE_NAMESPACE_SHELL_SCRIPT = (
