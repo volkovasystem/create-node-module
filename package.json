@@ -1,7 +1,7 @@
 {
 	"name": "@volkovasystem/create-node-module",
 	"alias": "create-node-module",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"description": "Fast bootstrap node module.",
 	"main": "create-node-module.js",
 	"scripts": {
