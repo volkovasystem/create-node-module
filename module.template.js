@@ -34,8 +34,6 @@
 	@license:module;
 */
 
-const util = require( "util" );
-
 const $moduleVariableNamespace = (
 	async	function $moduleVariableNamespace( sampleParameter ){
 				/*;
@@ -77,6 +75,8 @@ const $moduleVariableNamespace = (
 					@definition;
 				*/
 
+				const util = require( "util" );
+
 				try{
 					return	(
 								sampleParameter
@@ -102,4 +102,10 @@ const $moduleVariableNamespace = (
 			}
 );
 
-module.exports = $moduleVariableNamespace;
+(
+		module
+		.exports
+	=	(
+			$moduleVariableNamespace
+		)
+);
