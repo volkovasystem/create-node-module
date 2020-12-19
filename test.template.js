@@ -1,14 +1,6 @@
 "use strict";
 
 //;	@code-space:template-engine:
-const assert = require( "assert" );
-const util = require( "util" );
-
-const strictAssert = (
-	assert
-	.strict
-);
-
 //;	@procedure:check-directory:
 const checkDirectory = (
 	async	function checkDirectory( directoryPath ){
@@ -154,6 +146,7 @@ const executeShellScript = (
 	async	function executeShellScript( shellScript, moduleDirectoryPath ){
 				const childProcess = require( "child_process" );
 				const path = require( "path" );
+				const util = require( "util" );
 
 				const execAsync = (
 					util
@@ -380,6 +373,13 @@ const $moduleVariableNamespace = (
 
 const TEST_SAMPLE_UNIT = (
 	async	function TEST_SAMPLE_UNIT( ){
+				const assert = require( "assert" );
+
+				const strictAssert = (
+					assert
+					.strict
+				);
+
 				(
 					await	CLEAN_TEST_DIRECTORY( )
 				);
